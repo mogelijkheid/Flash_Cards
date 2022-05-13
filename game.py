@@ -19,3 +19,12 @@ class game:
         return self.converted_time
 
 
+    
+    def show_word(self):
+        
+        with open('word_list.json', 'r') as json_file:
+          data = json.load(json_file)
+          level=self.user_level
+          for j in data[level]:
+              print("h:",j)
+              print("e",data[level][j])
