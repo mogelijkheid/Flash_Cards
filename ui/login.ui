@@ -125,7 +125,7 @@ border-width: 0px;</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="username">
+    <widget class="QLineEdit" name="username_line">
      <property name="enabled">
       <bool>true</bool>
      </property>
