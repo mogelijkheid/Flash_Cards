@@ -354,7 +354,7 @@ height:20px;
     </property>
     <property name="font">
      <font>
-      <pointsize>25</pointsize>
+      <pointsize>24</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -378,7 +378,7 @@ height:20px;
     </property>
     <property name="font">
      <font>
-      <pointsize>60</pointsize>
+      <pointsize>35</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -530,7 +530,7 @@ color: rgb(170, 0, 0);
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
