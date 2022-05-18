@@ -1,83 +1,59 @@
 import json
-from user import users
-i=1
 import time
-import datetime
+
 class game_play():
-    
-    def __init__(self):
-        self.timer=0
-        
-    
-    def starting_time(self):
-        self.startingtime=time.time()
-
-    def ending_time(self):
-        self.endingtime=time.time()
-        game_play.total_time()
-
-    def total_time(self):
-        self.totaltime=round(self.startingtime-self.endingtime)
-        self.converted_time=datetime.timedelta(seconds=self.totaltime)
-        return self.converted_time
-    
-    def show_word(self,level):
-        self.nl=[]
-        self.en=[]
-        self.level=level
-        with open('word_list.json', 'r') as json_file:
-            data = json.load(json_file)
-            i=0
-            for j in data[str(self.level)]:
-                if i<20:
-                    self.nl.append(j)
-                    self.en.append(data[str(self.level)][j])
-                    i=i+1
-        return self.nl, self.en
-
-    
-    
-    def true(self,obj):
-        global i
+    def __init__(self,obj):
         self.obj=obj
-        if i==20:
-            self.obj.level=self.obj.level+1
-            obj.register(self.obj.level,555)
-            i=0
-        self.word_nl,self.word_en=game_play().show_word(self.obj.level)
-        self.nl=self.word_nl[i]
-        self.en=self.word_en[i]
-        i=i+1
-        # total_seconds = 3
-        # while total_seconds >= 0:
-        #     timer = datetime.timedelta(seconds = total_seconds)
-        #     print(timer, end="\r")
-        #     time.sleep(1)
-        #     total_seconds -= 1
-        return self.nl, self.en, i-1
-            
+        self.true_num=0
+        self.false_num = 0
+        self.timer=0
+        self.total_try=0
+        self.word_list = self.words()
+        
+    def starting_time(self):
+        self.start_time=time.time()
+        return self.start_time
+
+    def total_time(self,start_time):
+        self.start_time=start_time
+        self.end_time=time.time()
+        self.totaltime=self.end_time-self.start_time
+        return int(self.totaltime)
+ 
+    def words(self):
+        self.level= self.obj.level
+        with open('word_list.json', 'r') as json_file:
+           words=[]
+           data= json.load(json_file)
+           for j in data[str(self.level)]:
+              n_e=[]
+              n_e.append(j)
+              n_e.append(data[str(self.level)][j])
+              words.append(n_e)
+        return words
     
-    # def false(self):
-    #     global i
-    #     self.false_nl=[]
-    #     self.false_en=[]
-    #     self.level=1
-    #     if i==20:
-    #         level=level+1
-    #         i=0
-    #     self.word_nl,self.word_en=game_play().show_word(self.level)
-    #     self.nl=self.word_nl[i]
-    #     self.en=self.word_en[i]
-    #     self.false_nl=self.nl
-    #     self.false_en=self.false_en
-    #     i=i+1
-    #     # total_seconds = 3
-    #     # while total_seconds >= 0:
-    #     #     timer = datetime.timedelta(seconds = total_seconds)
-    #     #     print(timer, end="\r")
-    #     #     time.sleep(1)
-    #     #     total_seconds -= 1
-    #     return self.nl, self.en
+    def show_word(self):
+        if self.true_num==20:
+            self.obj.level=self.obj.level+1
+            self.obj.registerLevel(self.obj.level)
+            self.word_list = self.words()
+            self.true_num=0
+            self.total_try=0
+        self.nl=self.word_list[self.true_num][0]
+        self.en=self.word_list[self.true_num][1]
+        return self.nl,self.en,self.true_num
 
+    def total_try_num(self):
+        self.total_try=self.total_try+1 
+        return self.total_try
+    
+    def true(self):
+        self.true_num+=1
 
+    def false(self):
+        self.false_word=self.word_list.pop( self.true_num)
+        self.word_list.append(self.false_word)
+        #print(self.word_list)
+        
 
+    
