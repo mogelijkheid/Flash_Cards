@@ -2,14 +2,18 @@ from PyQt5 import QtWidgets,uic
 import login
 import play
 import game
-import user
 
 class menu_window(QtWidgets.QMainWindow):
     
     def __init__(self,obj):
         self.obj=obj
+        self.game_obj = game.game_play(self.obj)
         super(menu_window, self).__init__()
         uic.loadUi('ui/menu.ui', self)
+        self.welcome_label.setText("WELCOME "+str(self.obj.name).upper())
+        self.total_time_label.setText("TOTAL TIME "+self.obj.totalTime)
+        self.level_label.setText("LEVEL "+str(self.obj.level))
+        self.level_progressbar.setProperty('value',self.progress_bar(obj))
         self.logout_button.clicked.connect(self.login_window_show)       
         self.play_button.clicked.connect(self.play_window_show)
         self.show()
@@ -20,10 +24,11 @@ class menu_window(QtWidgets.QMainWindow):
         self.close()
     
     def play_window_show(self):
-        self.cams = play.play_window(self.obj)
-        self.word_nl, self.word_en=game.game_play().show_word(self.obj.level)
-        self.cams.level_label.setText("LEVEL "+str(self.obj.level))
-        self.cams.languages.setText("NEDERLANDS")
-        self.cams.words.setText(self.word_nl[0])
+        self.start_time=self.game_obj.starting_time()
+        self.cams = play.play_window(self.obj,self.start_time)
         self.cams.show()
         self.close()
+        
+    def progress_bar(self,obj):
+        self.obj=obj
+        return (self.obj.level/250)*100
